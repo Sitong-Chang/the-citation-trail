@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eee9df">
+  <meta name="description" content="The Citation Trail — a bilingual digital curation tracing the public circulation of excerpts from Zhu Runcang's wartime diary.">
+  <title>The Citation Trail｜引用踪迹</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topline">
+      <span data-en="A DIGITAL CURATION / 01" data-zh="数字策展 / 01">A DIGITAL CURATION / 01</span>
+      <span data-en="ARCHIVE · MEMORY · CIRCULATION" data-zh="档案 · 记忆 · 传播">ARCHIVE · MEMORY · CIRCULATION</span>
+    </div>
+
+    <header class="masthead">
+      <div class="masthead-copy">
+        <p class="eyebrow" data-en="A STUDY OF PUBLIC MEMORY" data-zh="一项关于公共记忆的研究">A STUDY OF PUBLIC MEMORY</p>
+        <h1><span data-en="The Citation Trail" data-zh="引用踪迹">The Citation Trail</span><span class="title-cn" data-en="｜引用踪迹" data-zh="｜The Citation Trail">｜引用踪迹</span></h1>
+        <p class="dek" data-en="How fragments of a private wartime diary travel through public sources — and what repeated circulation leaves behind." data-zh="一份私人战时日记的片段如何穿行于公共来源之间——而反复传播又留下了什么。">How fragments of a private wartime diary travel through public sources — and what repeated circulation leaves behind.</p>
+      </div>
+      <div class="header-tools">
+        <button class="text-button" id="language-toggle" type="button" aria-label="Switch language">中文 / EN</button>
+        <button class="text-button" id="reset-button" type="button"><span data-en="Reset view ↺" data-zh="重置视图 ↺">Reset view ↺</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro-strip">
+        <div>
+          <p class="section-kicker" data-en="THE OBJECT" data-zh="策展对象">THE OBJECT</p>
+          <h2 data-en="《贞丰八年血泪录》" data-zh="《贞丰八年血泪录》">《贞丰八年血泪录》</h2>
+          <p data-en="A wartime diary attributed in the working bibliography to Zhu Runcang. This project follows six excerpt groups (S1–S6) across seven public-facing sources." data-zh="一份归于朱润苍名下的战时日记。本项目追踪六组摘录（S1–S6）在七个公共传播来源中的出现情况。">A wartime diary attributed in the working bibliography to Zhu Runcang. This project follows six excerpt groups (S1–S6) across seven public-facing sources.</p>
+        </div>
+        <div class="intro-note">
+          <span class="note-mark">※</span>
+          <p data-en="The graph maps shared excerpt presence, not proven direction of citation. See the method note below." data-zh="图中呈现的是摘录共现关系，并非已经证实的引用方向。详见下方方法说明。">The graph maps shared excerpt presence, not proven direction of citation. See the method note below.</p>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Citation network explorer">
+        <div class="network-column">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker" data-en="01 / THE NETWORK" data-zh="01 / 传播网络">01 / THE NETWORK</p>
+              <h2 data-en="Seven sources, six fragments" data-zh="七个来源，六组摘录">Seven sources, six fragments</h2>
+            </div>
+            <span class="micro-label" data-en="INTERACTIVE MAP" data-zh="交互网络图">INTERACTIVE MAP</span>
+          </div>
+
+          <div class="legend" aria-label="Node categories">
+            <span><i class="dot local"></i><b data-en="Local chronicle" data-zh="地方志">Local chronicle</b></span>
+            <span><i class="dot academic"></i><b data-en="Academic" data-zh="学术出版">Academic</b></span>
+            <span><i class="dot media"></i><b data-en="Media" data-zh="媒体">Media</b></span>
+            <span><i class="dot official"></i><b data-en="Official platform" data-zh="官方平台">Official platform</b></span>
+            <span><i class="dot memorial"></i><b data-en="Memorial" data-zh="纪念空间">Memorial</b></span>
+          </div>
+
+          <div class="graph-frame">
+            <div class="graph-topline">
+              <span data-en="SHARED EXCERPT NETWORK" data-zh="共享摘录网络">SHARED EXCERPT NETWORK</span>
+              <span id="graph-status" aria-live="polite" data-en="Select a source to inspect its excerpts" data-zh="选择一个来源，查看其收录的摘录">Select a source to inspect its excerpts</span>
+            </div>
+            <svg id="network" role="img" aria-label="Force-directed network showing seven sources connected by shared diary excerpts"></svg>
+            <div class="graph-foot">
+              <span data-en="Node size = number of excerpt groups" data-zh="节点大小 = 收录摘录组数">Node size = number of excerpt groups</span>
+              <span data-en="Line weight = number of shared groups" data-zh="连线粗细 = 共享摘录组数">Line weight = number of shared groups</span>
+            </div>
+          </div>
+
+          <div class="excerpt-index">
+            <div class="index-heading">
+              <p class="section-kicker" data-en="02 / EXCERPT INDEX" data-zh="02 / 摘录索引">02 / EXCERPT INDEX</p>
+              <p data-en="Select a fragment to see where it appears." data-zh="选择一组摘录，查看它出现在哪些来源中。">Select a fragment to see where it appears.</p>
+            </div>
+            <div id="excerpt-buttons" class="excerpt-buttons"></div>
+          </div>
+        </div>
+
+        <aside class="detail-panel" aria-live="polite">
+          <div class="panel-top">
+            <p class="section-kicker" data-en="03 / SOURCE RECORD" data-zh="03 / 来源记录">03 / SOURCE RECORD</p>
+            <span class="panel-index" id="panel-index">—</span>
+          </div>
+          <div id="panel-content">
+            <p class="panel-placeholder" data-en="Choose a node in the network, or select an excerpt below it. The source record and the passages currently associated with it will appear here." data-zh="点击网络中的节点，或选择下方的一组摘录。这里将显示来源记录及目前与其关联的文本片段。">Choose a node in the network, or select an excerpt below it. The source record and the passages currently associated with it will appear here.</p>
+          </div>
+          <button id="clear-selection" class="clear-button" type="button" hidden><span data-en="Clear selection ×" data-zh="清除选择 ×">Clear selection ×</span></button>
+        </aside>
+      </section>
+
+      <section class="reading-section">
+        <div class="reading-heading">
+          <p class="section-kicker" data-en="04 / CURATORIAL NOTE" data-zh="04 / 策展阐释">04 / CURATORIAL NOTE</p>
+          <span class="micro-label" data-en="READING THE RECORD" data-zh="如何阅读这份记录">READING THE RECORD</span>
+        </div>
+        <div class="essay-grid">
+          <article class="essay" data-lang="en">
+            <h2>What travels<br>through an archive?</h2>
+            <p class="lead">A private diary does not enter public memory whole.</p>
+            <p>This curation follows six excerpt groups from <em>《贞丰八年血泪录》</em> as they appear across seven public-facing sources: a local chronicle, an academic periodical, news outlets, an official archival platform, a local media platform, and a memorial inscription.</p>
+            <p>When the same fragments recur across different channels, they become easier to recognise, repeat, and treat as the central account. The network makes that repetition visible. Its dense connections do not, by themselves, prove that one institution directly copied another; they show that the same excerpt groups have been selected by multiple sources.</p>
+            <p>The curatorial question is therefore not only what has been preserved, but also what kinds of material become legible as public history. The diary's author should not be reduced to the fragments that circulate most often. The figure of a witness to wartime violence may be historically important, while still being only one dimension of a person whose everyday life is not represented by this network.</p>
+          </article>
+          <article class="essay" data-lang="zh" hidden>
+            <h2>什么穿行于<br>档案之间？</h2>
+            <p class="lead">一份私人日记进入公共记忆时，并不会以完整的面貌出现。</p>
+            <p>本次策展追踪《贞丰八年血泪录》的六组摘录在七个公共传播来源中的出现情况。样本包括地方志、学术期刊、新闻媒体、官方档案平台、地方融媒体平台与纪念性铭文。</p>
+            <p>当相同片段在不同渠道反复出现，它们就更容易被识别、转述，并逐渐被视为这份日记最核心的内容。网络图将这种重复呈现出来。但密集的连线本身并不能证明某一机构直接复制了另一机构；它只能说明多个来源选择了相同的摘录组。</p>
+            <p>因此，策展所追问的不只是哪些内容被保存下来，还有哪些内容更容易成为公共历史。作者不应被压缩为传播最广的几个片段。作为战争暴行见证者的形象具有重要历史意义，但它仍然只是一个人的某个维度；这张网络并不能代表其未被纳入传播的日常生活。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="method-section">
+        <div>
+          <p class="section-kicker" data-en="05 / METHOD & LIMITS" data-zh="05 / 方法与边界">05 / METHOD & LIMITS</p>
+          <h2 data-en="What the network can — and cannot — say" data-zh="这张网络能够、也不能说明什么">What the network can — and cannot — say</h2>
+        </div>
+        <div class="method-copy">
+          <p data-en="Each source is associated with the excerpt IDs listed in the project's working dataset. An undirected edge is drawn when two sources share one or more excerpt IDs. Edge thickness represents the count of shared IDs. Node size represents the number of excerpt groups associated with that source." data-zh="每个来源关联项目工作数据集中列出的摘录编号。当两个来源共享一个或多个摘录编号时，绘制无向连线；线条粗细表示共享编号数量；节点大小表示该来源关联的摘录组数量。">Each source is associated with the excerpt IDs listed in the project's working dataset. An undirected edge is drawn when two sources share one or more excerpt IDs. Edge thickness represents the count of shared IDs. Node size represents the number of excerpt groups associated with that source.</p>
+          <p data-en="This is a map of excerpt overlap, not a verified citation genealogy. It does not establish who quoted whom, whether two sources consulted the same intermediate publication, or whether wording was edited between appearances. Those claims require source-by-source comparison of publication dates, footnotes, bibliographies, and exact textual variants." data-zh="这是一张摘录重合图，而非经过核实的引用谱系。它不能确定谁引用了谁、两个来源是否参考了同一中间文献，也不能判断文本在不同来源中是否经过改写。要提出这些判断，必须逐一比较来源的出版时间、注释、参考文献与文本异文。">This is a map of excerpt overlap, not a verified citation genealogy. It does not establish who quoted whom, whether two sources consulted the same intermediate publication, or whether wording was edited between appearances. Those claims require source-by-source comparison of publication dates, footnotes, bibliographies, and exact textual variants.</p>
+          <p class="caution" data-en="Transcription and attribution note: the excerpt texts and source associations in this prototype were carried over from the project's existing working draft. They are not presented as independently authenticated transcriptions. Check each passage against the cited publication or inscription before public release." data-zh="转录与归属说明：本原型中的摘录文本及来源关联沿用项目现有工作稿，尚未作为经过独立核验的转录文本呈现。正式发布前，请逐条对照所列出版物或铭文原件核验。">Transcription and attribution note: the excerpt texts and source associations in this prototype were carried over from the project's existing working draft. They are not presented as independently authenticated transcriptions. Check each passage against the cited publication or inscription before public release.</p>
+        </div>
+      </section>
+
+      <section class="references-section">
+        <div class="reading-heading">
+          <p class="section-kicker" data-en="06 / REFERENCES" data-zh="06 / 参考资料">06 / REFERENCES</p>
+          <span class="micro-label" data-en="SOURCE REGISTER" data-zh="资料登记">SOURCE REGISTER</span>
+        </div>
+        <ol id="reference-list" class="reference-list"></ol>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>THE CITATION TRAIL / 引用踪迹</span>
+      <span data-en="A research prototype · Static edition" data-zh="研究原型 · 静态网页版本">A research prototype · Static edition</span>
+    </footer>
+  </div>
+  <script src="./data.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
